@@ -1,46 +1,24 @@
-# xfjm136 GitHub Pages Homepage
+# xfjm136.github.io
 
-这是为 `xfjm136` 准备的个人主页静态站，适合直接部署到 GitHub Pages。
+这是 [xfjm136](https://github.com/xfjm136) 的 GitHub Pages 个人主页。
 
-## 文件结构
+页面定位是项目型技术主页，重点展示 GIS、遥感、地学计算、网络空间安全、CTF 与漏洞挖掘等方向。代表项目包括 [PSI-SimLab](https://github.com/xfjm136/PSI-SimLab)、[GeoSAR-Forge](https://github.com/xfjm136/GeoSAR-Forge) 和遥感滑坡识别。
 
-```text
-.
-├── index.html
-├── styles.css
-├── script.js
-├── .nojekyll
-└── README.md
-```
+## 内容结构
+
+- Hero：技术方向、GitHub 概览和个人头像背景
+- Profile：简短介绍项目方法和当前兴趣
+- Focus：GIS/遥感、地学计算、网络安全、自动化工具、机器学习解释、AI 辅助安全研究
+- Projects：代表项目，覆盖 PS-InSAR 数值学习、遥感处理、灾害识别、安全工具和自动化
+- Stack：常用语言、方向和工具
+- Contact：邮箱和 GitHub 联系入口
 
 ## 本地预览
 
-直接用浏览器打开 `index.html` 即可。页面是纯静态文件，不依赖构建步骤。
-
-如果想通过本地服务预览：
+这是纯静态站点，没有构建步骤。可以直接打开 `index.html`，也可以启动本地服务器：
 
 ```powershell
-python -m http.server 8000
+python -m http.server 8080
 ```
 
-然后访问 `http://localhost:8000`。
-
-## 部署到 GitHub Pages
-
-推荐创建仓库：
-
-```text
-xfjm136.github.io
-```
-
-然后把本目录所有文件提交到该仓库的 `main` 分支根目录。GitHub Pages 会自动发布到：
-
-```text
-https://xfjm136.github.io
-```
-
-也可以在任意仓库中启用 Pages，路径选择 `main` 分支 `/root`。
-
-## 数据来源
-
-页面内置了一份项目介绍内容，并在浏览器端尝试从 GitHub API 刷新公开统计数据和仓库更新时间。GitHub API 不可用时，页面仍会正常展示。
+然后访问 `http://localhost:8080/`。

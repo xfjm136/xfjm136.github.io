@@ -18,8 +18,13 @@
 
   function setThemeIcon() {
     const icon = themeToggle && themeToggle.querySelector("[data-lucide]");
-    if (!icon) return;
-    icon.setAttribute("data-lucide", root.dataset.theme === "dark" ? "moon" : "sun");
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (icon) {
+      icon.setAttribute("data-lucide", root.dataset.theme === "dark" ? "moon" : "sun");
+    }
+    if (metaTheme) {
+      metaTheme.setAttribute("content", root.dataset.theme === "dark" ? "#151816" : "#f7f8f3");
+    }
     refreshIcons();
   }
 
@@ -86,17 +91,22 @@
         <span><i data-lucide="calendar-days" aria-hidden="true"></i>${formatDate(repo.updated_at)}</span>
       `;
 
-      const link = card.querySelector(".project-link");
+      const link = card.querySelector(".project-actions, .project-link");
       card.insertBefore(meta, link);
     });
     refreshIcons();
   }
 
   async function refreshGitHubData() {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4500);
+
     try {
       const [profileResponse, reposResponse] = await Promise.all([
-        fetch(`https://api.github.com/users/${user}`),
-        fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=100`),
+        fetch(`https://api.github.com/users/${user}`, { signal: controller.signal }),
+        fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=100`, {
+          signal: controller.signal,
+        }),
       ]);
 
       if (!profileResponse.ok || !reposResponse.ok) {
@@ -115,10 +125,37 @@
       appendProjectMeta(repos);
     } catch (error) {
       console.info("Using bundled GitHub profile data.", error);
+    } finally {
+      clearTimeout(timeout);
     }
+  }
+
+  function revealOnScroll() {
+    const targets = document.querySelectorAll(".section, .focus-item, .project-card, .stack-layout, .contact-panel");
+    targets.forEach((target) => target.classList.add("reveal"));
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08 },
+    );
+
+    targets.forEach((target) => observer.observe(target));
   }
 
   setThemeIcon();
   refreshIcons();
+  revealOnScroll();
   refreshGitHubData();
 })();
