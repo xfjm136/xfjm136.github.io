@@ -119,7 +119,6 @@
         return !current || new Date(repo.updated_at) > new Date(current.updated_at) ? repo : current;
       }, null);
 
-      setText("[data-stat='repos']", profile.public_repos);
       setText("[data-stat='followers']", profile.followers);
       setText("[data-stat='updated']", latest ? formatDate(latest.updated_at).slice(0, 4) : "");
       appendProjectMeta(repos);
